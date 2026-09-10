@@ -1,0 +1,432 @@
+{% extends "base.html" %}
+
+{% block title %}Agri-Nexus | Smart Agriculture{% endblock %}
+
+{% block extra_css %}
+
+<style>
+
+.hero {
+    background:
+        radial-gradient(circle at 85% 20%, rgba(37,166,111,.25), transparent 30%),
+        linear-gradient(135deg, #082b1f, #0d5036);
+
+    color: white;
+    padding: 90px 0;
+    overflow: hidden;
+}
+
+.hero-grid {
+    width: min(1200px, 92%);
+    margin: auto;
+    display: grid;
+    grid-template-columns: 1.15fr .85fr;
+    gap: 50px;
+    align-items: center;
+}
+
+.hero-tag {
+    display: inline-block;
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.18);
+    padding: 8px 13px;
+    border-radius: 30px;
+    font-size: 12px;
+    margin-bottom: 20px;
+}
+
+.hero h1 {
+    font-size: clamp(42px, 6vw, 72px);
+    line-height: 1.02;
+    letter-spacing: -3px;
+}
+
+.hero h1 span {
+    color: #d5a83a;
+}
+
+.hero p {
+    color: #c4d8cf;
+    font-size: 17px;
+    line-height: 1.7;
+    max-width: 620px;
+    margin: 25px 0;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.hero-card {
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 25px;
+    padding: 25px;
+    backdrop-filter: blur(10px);
+}
+
+.farm-visual {
+    height: 350px;
+    border-radius: 20px;
+    background:
+        linear-gradient(
+            rgba(8,43,31,.15),
+            rgba(8,43,31,.55)
+        ),
+        linear-gradient(
+            140deg,
+            #8fbd7a,
+            #3d7d4d 45%,
+            #174c36
+        );
+    position: relative;
+    overflow: hidden;
+}
+
+.farm-sun {
+    position: absolute;
+    width: 75px;
+    height: 75px;
+    background: #d5a83a;
+    border-radius: 50%;
+    top: 30px;
+    right: 35px;
+    box-shadow: 0 0 50px rgba(213,168,58,.6);
+}
+
+.farm-info {
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(255,255,255,.92);
+    color: var(--green-dark);
+    padding: 17px;
+    border-radius: 15px;
+}
+
+.stats {
+    padding: 50px 0;
+    background: white;
+}
+
+.stats-grid {
+    width: min(1200px, 92%);
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 20px;
+}
+
+.stat {
+    text-align: center;
+    padding: 25px;
+}
+
+.stat strong {
+    display: block;
+    font-size: 35px;
+    color: var(--green);
+}
+
+.stat span {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.features {
+    padding: 80px 0;
+}
+
+.feature-heading {
+    width: min(1200px, 92%);
+    margin: auto auto 35px;
+}
+
+.feature-heading h2 {
+    font-size: 40px;
+    color: var(--green-dark);
+}
+
+.feature-heading p {
+    color: var(--muted);
+    margin-top: 8px;
+}
+
+.feature-grid {
+    width: min(1200px, 92%);
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 20px;
+}
+
+.feature {
+    background: white;
+    padding: 28px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    transition: .25s;
+}
+
+.feature:hover {
+    transform: translateY(-7px);
+    box-shadow: var(--shadow);
+}
+
+.feature-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: var(--mint);
+    display: grid;
+    place-items: center;
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+
+.feature h3 {
+    margin-bottom: 10px;
+}
+
+.feature p {
+    color: var(--muted);
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+@media(max-width:850px) {
+
+    .hero-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<section class="hero">
+
+    <div class="hero-grid">
+
+        <div>
+
+            <div class="hero-tag">
+                🌾 NEXT-GENERATION AGRICULTURE
+            </div>
+
+            <h1>
+                Farming,
+                <span>reimagined.</span>
+            </h1>
+
+            <p>
+                Agri-Nexus brings farm management, crop intelligence,
+                disease detection, weather insights, market intelligence
+                and produce traceability into one powerful platform.
+            </p>
+
+            <div class="hero-actions">
+
+                {% if user.is_authenticated %}
+
+                    <a href="{% url 'dashboard' %}"
+                       class="btn btn-gold">
+                        Open Dashboard →
+                    </a>
+
+                {% else %}
+
+                    <a href="{% url 'register' %}"
+                       class="btn btn-gold">
+                        Start Farming Smarter →
+                    </a>
+
+                    <a href="{% url 'login' %}"
+                       class="btn btn-light">
+                        Login
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <div class="hero-card">
+
+            <div class="farm-visual">
+
+                <div class="farm-sun"></div>
+
+                <div class="farm-info">
+
+                    <strong>🌱 Smart Farm Monitor</strong>
+
+                    <div style="margin-top:7px;
+                                font-size:13px;
+                                color:#6d7d75;">
+
+                        Crop health · Weather · Market · Advisory
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="stats">
+
+    <div class="stats-grid">
+
+        <div class="stat">
+            <strong>{{ farmers_count }}</strong>
+            <span>Registered Farmers</span>
+        </div>
+
+        <div class="stat">
+            <strong>{{ farms_count }}</strong>
+            <span>Connected Farms</span>
+        </div>
+
+        <div class="stat">
+            <strong>{{ crops_count }}</strong>
+            <span>Crop Profiles</span>
+        </div>
+
+        <div class="stat">
+            <strong>{{ produce_count }}</strong>
+            <span>Produce Records</span>
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="features">
+
+    <div class="feature-heading">
+
+        <h2>One platform. Every farming decision.</h2>
+
+        <p>
+            Built around the real journey of agricultural produce.
+        </p>
+
+    </div>
+
+
+    <div class="feature-grid">
+
+        <div class="feature">
+
+            <div class="feature-icon">🌱</div>
+
+            <h3>Farm & Crop Management</h3>
+
+            <p>
+                Track farms, crops, cultivation areas,
+                sowing dates and expected harvests.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-icon">🤖</div>
+
+            <h3>AI Crop Health</h3>
+
+            <p>
+                Upload crop images and prepare the platform
+                for intelligent disease detection.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-icon">🌦️</div>
+
+            <h3>Weather Intelligence</h3>
+
+            <p>
+                Connect weather information with
+                crop-specific farming decisions.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-icon">💰</div>
+
+            <h3>Market Intelligence</h3>
+
+            <p>
+                Compare agricultural market prices
+                and identify better selling opportunities.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-icon">💡</div>
+
+            <h3>Smart Advisory</h3>
+
+            <p>
+                Convert farm, crop and weather information
+                into actionable recommendations.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-icon">🔲</div>
+
+            <h3>Produce Traceability</h3>
+
+            <p>
+                Give harvested produce a digital identity
+                for transparent farm-to-market tracking.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

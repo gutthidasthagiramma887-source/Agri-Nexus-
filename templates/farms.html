@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block title %}My Farms | Agri-Nexus{% endblock %}
+
+{% block content %}
+
+<div class="page">
+
+<div class="container">
+
+<div class="section-title">
+    <h1>My Farms 🚜</h1>
+    <p>Manage your agricultural land.</p>
+</div>
+
+<div style="display:grid;
+            grid-template-columns:.8fr 1.2fr;
+            gap:25px;">
+
+<div class="card">
+
+<h2>Add New Farm</h2>
+
+<form method="POST"
+      style="margin-top:20px;">
+
+{% csrf_token %}
+
+<div class="form-group">
+<label>Farm Name</label>
+<input class="form-control"
+       name="farm_name"
+       required>
+</div>
+
+<div class="form-group">
+<label>Location</label>
+<input class="form-control"
+       name="location"
+       required>
+</div>
+
+<div class="form-group">
+<label>Area (acres)</label>
+<input class="form-control"
+       type="number"
+       step="0.01"
+       name="area"
+       required>
+</div>
+
+<div class="form-group">
+<label>Soil Type</label>
+<input class="form-control"
+       name="soil_type">
+</div>
+
+<div class="form-group">
+<label>Irrigation Type</label>
+<input class="form-control"
+       name="irrigation_type">
+</div>
+
+<div style="display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:10px;">
+
+<input class="form-control"
+       name="latitude"
+       placeholder="Latitude">
+
+<input class="form-control"
+       name="longitude"
+       placeholder="Longitude">
+
+</div>
+
+<button class="btn btn-primary"
+        style="margin-top:18px;">
+    Add Farm
+</button>
+
+</form>
+
+</div>
+
+
+<div class="card">
+
+<h2>Your Farms</h2>
+
+<div style="margin-top:20px;">
+
+{% for farm in farms %}
+
+<div style="padding:20px 0;
+            border-bottom:1px solid var(--border);">
+
+<h3>🚜 {{ farm.farm_name }}</h3>
+
+<p style="color:var(--muted);
+          margin-top:7px;">
+
+{{ farm.location }}
+
+</p>
+
+<div style="margin-top:10px;">
+
+<span class="badge">
+{{ farm.area }} acres
+</span>
+
+<span class="badge">
+{{ farm.soil_type|default:"Soil not specified" }}
+</span>
+
+</div>
+
+</div>
+
+{% empty %}
+
+<p style="color:var(--muted);">
+No farms added yet.
+</p>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

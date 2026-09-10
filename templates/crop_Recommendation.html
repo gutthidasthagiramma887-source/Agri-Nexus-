@@ -1,0 +1,411 @@
+{% extends "base.html" %}
+
+{% block title %}Smart Crop Recommendation | Agri-Nexus{% endblock %}
+
+{% block content %}
+
+<style>
+.crop-page {
+    max-width: 1250px;
+    margin: auto;
+    padding: 35px 22px 60px;
+}
+
+/* HERO */
+.crop-hero {
+    background:
+        radial-gradient(circle at 90% 20%, rgba(255,255,255,.15), transparent 30%),
+        linear-gradient(135deg, #063b2a, #087f5b 55%, #11a36f);
+    color: white;
+    border-radius: 28px;
+    padding: 42px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 28px;
+}
+
+.crop-hero:after {
+    content: "🌱";
+    position: absolute;
+    right: 45px;
+    bottom: -30px;
+    font-size: 150px;
+    opacity: .12;
+}
+
+.hero-tag {
+    display: inline-block;
+    background: rgba(255,255,255,.14);
+    border: 1px solid rgba(255,255,255,.2);
+    padding: 8px 14px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 14px;
+}
+
+.crop-hero h1 {
+    font-size: 42px;
+    margin: 0 0 10px;
+    font-weight: 800;
+}
+
+.crop-hero p {
+    max-width: 700px;
+    color: rgba(255,255,255,.85);
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+/* WEATHER STRIP */
+.weather-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.weather-card {
+    background: white;
+    border: 1px solid #e6eee9;
+    border-radius: 20px;
+    padding: 22px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.05);
+}
+
+.weather-label {
+    color: #718078;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.weather-value {
+    font-size: 30px;
+    font-weight: 800;
+    color: #073d2b;
+    margin-top: 7px;
+}
+
+/* SECTION */
+.section-title {
+    margin-bottom: 18px;
+}
+
+.section-title h2 {
+    margin: 0;
+    color: #073d2b;
+    font-size: 27px;
+}
+
+.section-title p {
+    color: #718078;
+    margin-top: 6px;
+}
+
+/* CROP GRID */
+.crop-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.crop-card {
+    background: white;
+    border-radius: 24px;
+    padding: 25px;
+    border: 1px solid #e5eee9;
+    box-shadow: 0 12px 35px rgba(0,0,0,.06);
+    transition: .25s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.crop-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 18px 45px rgba(0,0,0,.10);
+}
+
+.rank {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: #eaf8f1;
+    color: #087f5b;
+    padding: 7px 11px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.crop-icon {
+    width: 62px;
+    height: 62px;
+    border-radius: 18px;
+    background: #eaf8f1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    margin-bottom: 17px;
+}
+
+.crop-card h3 {
+    margin: 0;
+    font-size: 23px;
+    color: #073d2b;
+}
+
+.crop-season {
+    color: #7a8780;
+    font-size: 13px;
+    margin: 7px 0 18px;
+}
+
+/* SCORE */
+.score-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.score-label {
+    font-size: 13px;
+    color: #66736d;
+    font-weight: 700;
+}
+
+.score {
+    font-weight: 900;
+    color: #087f5b;
+}
+
+.progress {
+    height: 9px;
+    background: #edf2ef;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #087f5b, #20c997);
+    border-radius: 20px;
+}
+
+/* REASONS */
+.reasons {
+    margin-top: 20px;
+}
+
+.reasons-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: #073d2b;
+    margin-bottom: 9px;
+}
+
+.reason {
+    font-size: 12px;
+    color: #617069;
+    margin: 7px 0;
+}
+
+.reason span {
+    color: #087f5b;
+    font-weight: 900;
+    margin-right: 5px;
+}
+
+/* FOOTNOTE */
+.ai-note {
+    margin-top: 30px;
+    padding: 20px 22px;
+    border-radius: 18px;
+    background: #fffaf0;
+    border: 1px solid #f0dfb1;
+    color: #725a22;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+/* RESPONSIVE */
+@media(max-width: 900px) {
+    .crop-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media(max-width: 650px) {
+    .crop-hero {
+        padding: 28px;
+    }
+
+    .crop-hero h1 {
+        font-size: 31px;
+    }
+
+    .weather-strip,
+    .crop-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
+
+<div class="crop-page">
+
+    <!-- HERO -->
+    <section class="crop-hero">
+
+        <div class="hero-tag">
+            🧠 AGRI-NEXUS SMART INTELLIGENCE
+        </div>
+
+        <h1>Smart Crop Recommendation</h1>
+
+        <p>
+            Discover crops that are better suited to your farm using
+            weather conditions, water requirements, soil information
+            and crop intelligence.
+        </p>
+
+    </section>
+
+
+    <!-- LIVE CONDITIONS -->
+    <div class="weather-strip">
+
+        <div class="weather-card">
+            <div class="weather-label">🌡️ Current Temperature</div>
+            <div class="weather-value">
+                {{ temperature|floatformat:1 }}°C
+            </div>
+        </div>
+
+        <div class="weather-card">
+            <div class="weather-label">💧 Humidity</div>
+            <div class="weather-value">
+                {{ humidity|floatformat:0 }}%
+            </div>
+        </div>
+
+        <div class="weather-card">
+            <div class="weather-label">🌧️ Current Rainfall</div>
+            <div class="weather-value">
+                {{ rainfall|floatformat:1 }} mm
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- RECOMMENDATIONS -->
+    <div class="section-title">
+
+        <h2>Recommended Crops</h2>
+
+        <p>
+            Ranked according to the current farming conditions.
+        </p>
+
+    </div>
+
+
+    <div class="crop-grid">
+
+        {% for item in recommendations %}
+
+        <div class="crop-card">
+
+            <div class="rank">
+                #{{ forloop.counter }}
+            </div>
+
+            <div class="crop-icon">
+                🌱
+            </div>
+
+            <h3>
+                {{ item.crop.name }}
+            </h3>
+
+            <div class="crop-season">
+                {{ item.crop.season }} •
+                {{ item.crop.water_requirement|default:"Water data unavailable" }}
+            </div>
+
+
+            <div class="score-row">
+
+                <span class="score-label">
+                    Suitability
+                </span>
+
+                <span class="score">
+                    {{ item.score }}%
+                </span>
+
+            </div>
+
+
+            <div class="progress">
+
+                <div
+                    class="progress-bar"
+                    style="width: {{ item.score }}%;">
+                </div>
+
+            </div>
+
+
+            <div class="reasons">
+
+                <div class="reasons-title">
+                    Why this crop?
+                </div>
+
+                {% for reason in item.reasons %}
+
+                <div class="reason">
+                    <span>✓</span>
+                    {{ reason }}
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="crop-card">
+            <h3>No crop recommendations available</h3>
+            <p>
+                Please add crops from the Django Admin panel.
+            </p>
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+
+    <!-- AI NOTE -->
+    <div class="ai-note">
+
+        <strong>🧠 Smart Agriculture Note:</strong>
+
+        This recommendation engine combines farm information,
+        crop characteristics and live weather conditions to
+        generate a suitability score. It is an AI-assisted
+        decision-support feature and does not depend on physical
+        sensors.
+
+    </div>
+
+</div>
+
+{% endblock %}

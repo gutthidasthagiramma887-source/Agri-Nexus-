@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block title %}Disease AI | Agri-Nexus{% endblock %}
+
+{% block content %}
+
+<div class="page">
+
+<div class="container">
+
+<div class="section-title">
+
+<h1>AI Crop Health 🤖🌱</h1>
+
+<p>
+Upload a crop image for intelligent health analysis.
+</p>
+
+</div>
+
+
+<div style="display:grid;
+            grid-template-columns:.8fr 1.2fr;
+            gap:25px;">
+
+<div class="card">
+
+<h2>New Crop Scan</h2>
+
+<form method="POST"
+      enctype="multipart/form-data"
+      style="margin-top:20px;">
+
+{% csrf_token %}
+
+<div class="form-group">
+
+<label>Select Crop</label>
+
+<select class="form-control"
+        name="crop"
+        required>
+
+<option value="">
+Select Crop
+</option>
+
+{% for crop in crops %}
+
+<option value="{{ crop.id }}">
+{{ crop.name }}
+</option>
+
+{% endfor %}
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Crop Image</label>
+
+<input class="form-control"
+       type="file"
+       name="image"
+       accept="image/*"
+       required>
+
+</div>
+
+
+<div style="background:var(--mint);
+            padding:15px;
+            border-radius:12px;
+            font-size:13px;
+            color:var(--green-dark);
+            margin-bottom:18px;">
+
+💡 Tip: Upload a clear image of the
+affected leaf for better analysis.
+
+</div>
+
+
+<button class="btn btn-primary">
+🔍 Analyze Crop
+</button>
+
+</form>
+
+</div>
+
+
+<div class="card">
+
+<h2>Previous Scans</h2>
+
+<div style="margin-top:20px;">
+
+{% for scan in detections %}
+
+<div style="padding:20px 0;
+            border-bottom:1px solid var(--border);">
+
+<h3>
+🌱 {{ scan.crop.name }}
+</h3>
+
+<p style="margin-top:7px;">
+Result:
+<strong>{{ scan.detected_disease }}</strong>
+</p>
+
+{% if scan.confidence %}
+
+<p style="margin-top:5px;">
+Confidence:
+{{ scan.confidence }}%
+</p>
+
+{% endif %}
+
+<p style="color:var(--muted);
+          font-size:13px;
+          margin-top:7px;">
+
+{{ scan.detected_at }}
+
+</p>
+
+<p style="margin-top:10px;
+          color:var(--muted);">
+
+{{ scan.treatment }}
+
+</p>
+
+</div>
+
+{% empty %}
+
+<p style="color:var(--muted);">
+No crop scans yet.
+</p>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

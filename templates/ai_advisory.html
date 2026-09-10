@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+
+{% block title %}AI Farmer Advisory | Agri-Nexus{% endblock %}
+
+{% block content %}
+
+<style>
+.ai-page {
+    max-width: 1100px;
+    margin: auto;
+    padding: 40px 22px 70px;
+}
+
+.ai-hero {
+    background: linear-gradient(135deg, #062d20, #08784b);
+    color: white;
+    border-radius: 28px;
+    padding: 42px;
+    margin-bottom: 28px;
+}
+
+.ai-hero h1 {
+    font-size: 40px;
+    margin: 10px 0;
+}
+
+.ai-hero p {
+    color: #d8eee5;
+    line-height: 1.7;
+    max-width: 720px;
+}
+
+.ai-badge {
+    display: inline-block;
+    padding: 8px 14px;
+    border-radius: 20px;
+    background: rgba(255,255,255,.12);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.ai-card {
+    background: white;
+    border: 1px solid #e3eee8;
+    border-radius: 24px;
+    padding: 30px;
+    box-shadow: 0 12px 35px rgba(0,0,0,.06);
+}
+
+.ai-card h2 {
+    color: #123e2d;
+    margin-top: 0;
+}
+
+select {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #d8e5de;
+    border-radius: 13px;
+    font-size: 15px;
+    margin: 10px 0 18px;
+}
+
+.ai-btn {
+    width: 100%;
+    border: none;
+    padding: 14px;
+    border-radius: 13px;
+    background: linear-gradient(135deg,#087449,#12a363);
+    color: white;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.result {
+    margin-top: 25px;
+}
+
+.advice-item {
+    padding: 17px;
+    margin-bottom: 12px;
+    background: #f3faf6;
+    border-left: 5px solid #0b8f59;
+    border-radius: 12px;
+    color: #214536;
+    font-weight: 600;
+}
+
+.crop-title {
+    color: #0b7448;
+    font-size: 26px;
+    font-weight: 900;
+    margin-bottom: 18px;
+}
+
+.ai-note {
+    margin-top: 22px;
+    padding: 16px;
+    border-radius: 13px;
+    background: #fff8e5;
+    color: #765b16;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+@media(max-width:650px) {
+    .ai-hero {
+        padding: 30px 22px;
+    }
+
+    .ai-hero h1 {
+        font-size: 30px;
+    }
+}
+</style>
+
+<div class="ai-page">
+
+    <section class="ai-hero">
+
+        <span class="ai-badge">
+            🤖 SMART AGRICULTURE AI
+        </span>
+
+        <h1>
+            AI Farmer Advisory
+        </h1>
+
+        <p>
+            Select your crop and receive practical crop-care
+            recommendations designed to help farmers make
+            better day-to-day cultivation decisions.
+        </p>
+
+    </section>
+
+
+    <div class="ai-card">
+
+        <h2>
+            🌱 Get Crop Advice
+        </h2>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <label>
+                Select your crop
+            </label>
+
+            <select name="crop" required>
+
+                <option value="">
+                    -- Choose Crop --
+                </option>
+
+                {% for crop in crops %}
+
+                    <option
+                        value="{{ crop.id }}"
+                        {% if selected_crop and selected_crop.id == crop.id %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ crop.name }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+            <button class="ai-btn" type="submit">
+                🤖 Generate AI Advisory
+            </button>
+
+        </form>
+
+
+        {% if advice %}
+
+            <div class="result">
+
+                <div class="crop-title">
+                    🌾 {{ selected_crop.name }} Advisory
+                </div>
+
+                {% for item in advice %}
+
+                    <div class="advice-item">
+                        ✓ {{ item }}
+                    </div>
+
+                {% endfor %}
+
+                <div class="ai-note">
+                    💡 <strong>Agri-Nexus Note:</strong>
+                    These recommendations are decision-support
+                    guidance. Farmers should consult qualified
+                    agricultural experts for serious crop disease
+                    or pest problems.
+                </div>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,203 @@
+{% extends "base.html" %}
+
+{% block title %}Crops | Agri-Nexus{% endblock %}
+
+{% block content %}
+
+<div class="page">
+
+<div class="container">
+
+<div class="section-title">
+<h1>Crop Management 🌱</h1>
+<p>Track what you grow and when you grow it.</p>
+</div>
+
+<div style="display:grid;
+            grid-template-columns:.8fr 1.2fr;
+            gap:25px;">
+
+<div class="card">
+
+<h2>Add Cultivation</h2>
+
+<form method="POST"
+      style="margin-top:20px;">
+
+{% csrf_token %}
+
+<div class="form-group">
+
+<label>Farm</label>
+
+<select class="form-control"
+        name="farm"
+        required>
+
+<option value="">
+Select Farm
+</option>
+
+{% for farm in farms %}
+
+<option value="{{ farm.id }}">
+{{ farm.farm_name }}
+</option>
+
+{% endfor %}
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Crop</label>
+
+<select class="form-control"
+        name="crop"
+        required>
+
+<option value="">
+Select Crop
+</option>
+
+{% for crop in crops %}
+
+<option value="{{ crop.id }}">
+{{ crop.name }}
+</option>
+
+{% endfor %}
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Sowing Date</label>
+
+<input class="form-control"
+       type="date"
+       name="sowing_date"
+       required>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Expected Harvest Date</label>
+
+<input class="form-control"
+       type="date"
+       name="expected_harvest_date">
+
+</div>
+
+
+<div class="form-group">
+
+<label>Area (acres)</label>
+
+<input class="form-control"
+       type="number"
+       step="0.01"
+       name="area"
+       required>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Expected Yield (kg)</label>
+
+<input class="form-control"
+       type="number"
+       step="0.01"
+       name="expected_yield">
+
+</div>
+
+
+<div class="form-group">
+
+<label>Status</label>
+
+<select class="form-control"
+        name="status">
+
+<option>Growing</option>
+<option>Flowering</option>
+<option>Fruiting</option>
+<option>Ready for Harvest</option>
+<option>Harvested</option>
+
+</select>
+
+</div>
+
+
+<button class="btn btn-primary">
+Add Crop
+</button>
+
+</form>
+
+</div>
+
+
+<div class="card">
+
+<h2>Current Cultivations</h2>
+
+<div style="margin-top:20px;">
+
+{% for item in cultivations %}
+
+<div style="padding:20px 0;
+            border-bottom:1px solid var(--border);">
+
+<h3>🌱 {{ item.crop.name }}</h3>
+
+<p style="color:var(--muted);">
+Farm: {{ item.farm.farm_name }}
+</p>
+
+<p style="margin-top:7px;">
+Sowing: {{ item.sowing_date }}
+</p>
+
+<p style="margin-top:7px;">
+Area: {{ item.area }} acres
+</p>
+
+<span class="badge">
+{{ item.status }}
+</span>
+
+</div>
+
+{% empty %}
+
+<p style="color:var(--muted);">
+No cultivation records yet.
+</p>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

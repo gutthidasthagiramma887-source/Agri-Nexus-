@@ -1,0 +1,491 @@
+{% extends "base.html" %}
+
+{% block title %}Live Weather | Agri-Nexus{% endblock %}
+
+{% block content %}
+
+<div class="page">
+<div class="container">
+
+    <div class="section-title">
+        <h1>Live Farm Weather 🌦️</h1>
+        <p>Real-time weather intelligence for smarter farming decisions.</p>
+    </div>
+
+    {% if weather_data %}
+
+    {% for weather in weather_data %}
+
+    <!-- CURRENT WEATHER -->
+    <div class="card" style="
+        margin-bottom:25px;
+        background:linear-gradient(135deg,#063b2a,#087f5b);
+        color:white;
+        border:none;
+        position:relative;
+        overflow:hidden;
+    ">
+
+        <div style="
+            position:absolute;
+            width:250px;
+            height:250px;
+            border-radius:50%;
+            background:rgba(255,255,255,.06);
+            right:-80px;
+            top:-100px;
+        "></div>
+
+        <div style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            position:relative;
+        ">
+
+            <div>
+                <span style="
+                    display:inline-block;
+                    padding:7px 13px;
+                    border-radius:30px;
+                    background:rgba(255,255,255,.13);
+                    font-size:13px;
+                ">
+                    🟢 LIVE WEATHER
+                </span>
+
+                <h2 style="
+                    color:white;
+                    margin-top:18px;
+                    font-size:32px;
+                ">
+                    {{ weather.district }}
+                </h2>
+
+                <p style="margin-top:8px;opacity:.8;">
+                    Updated: {{ weather.recorded_at }}
+                </p>
+            </div>
+
+            <div style="font-size:70px;">
+                ☀️
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- CURRENT WEATHER STATS -->
+
+    <div style="
+        display:grid;
+        grid-template-columns:repeat(4,1fr);
+        gap:18px;
+        margin-bottom:25px;
+    ">
+
+        <div class="card" style="text-align:center;">
+            <div style="font-size:38px;">🌡️</div>
+            <p style="color:var(--muted);margin-top:8px;">
+                Temperature
+            </p>
+            <h2 style="margin-top:7px;">
+                {{ weather.temperature }}°C
+            </h2>
+        </div>
+
+        <div class="card" style="text-align:center;">
+            <div style="font-size:38px;">💧</div>
+            <p style="color:var(--muted);margin-top:8px;">
+                Humidity
+            </p>
+            <h2 style="margin-top:7px;">
+                {{ weather.humidity }}%
+            </h2>
+        </div>
+
+        <div class="card" style="text-align:center;">
+            <div style="font-size:38px;">🌧️</div>
+            <p style="color:var(--muted);margin-top:8px;">
+                Rainfall
+            </p>
+            <h2 style="margin-top:7px;">
+                {{ weather.rainfall }} mm
+            </h2>
+        </div>
+
+        <div class="card" style="text-align:center;">
+            <div style="font-size:38px;">💨</div>
+            <p style="color:var(--muted);margin-top:8px;">
+                Wind Speed
+            </p>
+            <h2 style="margin-top:7px;">
+                {{ weather.wind_speed }} km/h
+            </h2>
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+
+    <!-- 7 DAY FORECAST -->
+
+    {% if forecast_data %}
+
+    <div class="card" style="margin-bottom:25px;">
+
+        <div style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:15px;
+            flex-wrap:wrap;
+        ">
+
+            <div>
+                <h2>📅 7-Day Weather Forecast</h2>
+
+                <p style="
+                    color:var(--muted);
+                    margin-top:6px;
+                ">
+                    Plan irrigation, spraying and crop protection in advance.
+                </p>
+            </div>
+
+            <div class="badge">
+                AI FARM PLANNER
+            </div>
+
+        </div>
+
+
+        <div style="
+            display:grid;
+            grid-template-columns:repeat(7,1fr);
+            gap:12px;
+            margin-top:25px;
+            overflow-x:auto;
+        ">
+
+        {% for day in forecast_data %}
+
+            <div style="
+                min-width:135px;
+                padding:18px 12px;
+                border:1px solid var(--border);
+                border-radius:15px;
+                text-align:center;
+                background:#fff;
+            ">
+
+                <strong style="font-size:14px;">
+                    {{ day.date }}
+                </strong>
+
+                <div style="
+                    font-size:35px;
+                    margin:14px 0;
+                ">
+                    {% if day.rain_probability >= 60 %}
+                        🌧️
+                    {% elif day.rain_probability >= 30 %}
+                        🌦️
+                    {% elif day.max_temp >= 35 %}
+                        ☀️
+                    {% else %}
+                        ⛅
+                    {% endif %}
+                </div>
+
+                <div style="font-size:13px;color:var(--muted);">
+                    Temperature
+                </div>
+
+                <div style="
+                    margin-top:5px;
+                    font-weight:700;
+                ">
+                    {{ day.max_temp }}° / {{ day.min_temp }}°
+                </div>
+
+                <div style="
+                    margin-top:15px;
+                    font-size:13px;
+                    color:var(--muted);
+                ">
+                    🌧️ Rain chance
+                </div>
+
+                <strong>
+                    {{ day.rain_probability }}%
+                </strong>
+
+                <div style="
+                    margin-top:12px;
+                    font-size:13px;
+                    color:var(--muted);
+                ">
+                    Expected rain
+                </div>
+
+                <strong>
+                    {{ day.rainfall }} mm
+                </strong>
+
+            </div>
+
+        {% endfor %}
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- FARM INTELLIGENCE -->
+
+    {% if weather_data %}
+
+    {% for weather in weather_data %}
+
+    <div class="card" style="margin-bottom:25px;">
+
+        <div style="
+            display:flex;
+            align-items:center;
+            gap:12px;
+        ">
+
+            <div style="font-size:34px;">
+                🧠
+            </div>
+
+            <div>
+                <h2>Smart Farming Intelligence</h2>
+
+                <p style="
+                    color:var(--muted);
+                    margin-top:5px;
+                ">
+                    Weather-based recommendations for your farm.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div style="
+            display:grid;
+            grid-template-columns:repeat(2,1fr);
+            gap:18px;
+            margin-top:22px;
+        ">
+
+
+            <!-- IRRIGATION -->
+
+            <div style="
+                padding:20px;
+                border-radius:15px;
+                background:var(--mint);
+            ">
+
+                <h3>💧 Irrigation Advisory</h3>
+
+                <p style="
+                    margin-top:9px;
+                    line-height:1.6;
+                    color:var(--muted);
+                ">
+
+                {% if weather.rainfall == 0 %}
+                    No current rainfall.
+                    Check soil moisture before irrigation.
+                    Avoid unnecessary water usage.
+                {% else %}
+                    Rainfall detected.
+                    Reduce irrigation and monitor field water levels.
+                {% endif %}
+
+                </p>
+
+            </div>
+
+
+            <!-- HEAT -->
+
+            <div style="
+                padding:20px;
+                border-radius:15px;
+                background:#fff8e6;
+            ">
+
+                <h3>🌡️ Heat Risk</h3>
+
+                <p style="
+                    margin-top:9px;
+                    line-height:1.6;
+                    color:var(--muted);
+                ">
+
+                {% if weather.temperature >= 35 %}
+                    ⚠️ High heat risk.
+                    Protect crops from heat stress and maintain
+                    adequate irrigation.
+                {% else %}
+                    Temperature is currently moderate.
+                    Continue normal crop monitoring.
+                {% endif %}
+
+                </p>
+
+            </div>
+
+
+            <!-- DISEASE -->
+
+            <div style="
+                padding:20px;
+                border-radius:15px;
+                background:#eef7ff;
+            ">
+
+                <h3>🦠 Disease Risk</h3>
+
+                <p style="
+                    margin-top:9px;
+                    line-height:1.6;
+                    color:var(--muted);
+                ">
+
+                {% if weather.humidity >= 75 %}
+                    ⚠️ High humidity can increase fungal disease risk.
+                    Inspect leaves regularly.
+                {% else %}
+                    Humidity is moderate.
+                    Continue routine crop health monitoring.
+                {% endif %}
+
+                </p>
+
+            </div>
+
+
+            <!-- SPRAYING -->
+
+            <div style="
+                padding:20px;
+                border-radius:15px;
+                background:#f4f1ff;
+            ">
+
+                <h3>🧴 Spraying Advisory</h3>
+
+                <p style="
+                    margin-top:9px;
+                    line-height:1.6;
+                    color:var(--muted);
+                ">
+
+                {% if weather.wind_speed >= 20 %}
+                    ⚠️ Strong wind.
+                    Avoid spraying pesticides or fertilizers now.
+                {% else %}
+                    Wind conditions are suitable for normal
+                    farm activities.
+                {% endif %}
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- FARM DECISION -->
+
+    <div class="card" style="
+        margin-bottom:25px;
+        border-left:5px solid var(--gold);
+    ">
+
+        <h2>🚜 Today's Farm Decision</h2>
+
+        <p style="
+            margin-top:12px;
+            line-height:1.8;
+            color:var(--muted);
+        ">
+
+            Based on current weather conditions, farmers can
+            make better decisions about irrigation, spraying,
+            crop protection and field monitoring.
+
+        </p>
+
+        <div style="
+            display:flex;
+            gap:10px;
+            flex-wrap:wrap;
+            margin-top:18px;
+        ">
+
+            <span class="badge">
+                🌱 Monitor Crop
+            </span>
+
+            <span class="badge">
+                💧 Check Soil Moisture
+            </span>
+
+            <span class="badge">
+                🔍 Inspect Leaves
+            </span>
+
+            <span class="badge">
+                📅 Plan Farm Work
+            </span>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+    {% endif %}
+
+
+    {% else %}
+
+    <div class="card" style="text-align:center;padding:50px 20px;">
+
+        <div style="font-size:55px;">
+            🌦️
+        </div>
+
+        <h2 style="margin-top:15px;">
+            No weather data available
+        </h2>
+
+        <p style="
+            color:var(--muted);
+            margin-top:10px;
+        ">
+            Add a farm with valid coordinates to receive
+            live weather information.
+        </p>
+
+    </div>
+
+    {% endif %}
+
+</div>
+</div>
+
+{% endblock %}

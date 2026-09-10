@@ -1,0 +1,414 @@
+{% extends "base.html" %}
+
+{% block title %}Market Intelligence | Agri-Nexus{% endblock %}
+
+{% block content %}
+
+<style>
+.market-page {
+    max-width: 1250px;
+    margin: auto;
+    padding: 35px 22px 60px;
+}
+
+.market-hero {
+    background: linear-gradient(135deg, #073b2a, #087f5b, #13a873);
+    color: white;
+    border-radius: 28px;
+    padding: 42px;
+    margin-bottom: 28px;
+}
+
+.market-tag {
+    display: inline-block;
+    padding: 8px 14px;
+    border-radius: 30px;
+    background: rgba(255,255,255,.14);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.market-hero h1 {
+    font-size: 42px;
+    margin: 15px 0 8px;
+}
+
+.market-hero p {
+    max-width: 700px;
+    line-height: 1.7;
+    color: rgba(255,255,255,.85);
+}
+
+/* BEST MARKET */
+.best-market {
+    background: white;
+    border: 1px solid #e4eee9;
+    border-radius: 25px;
+    padding: 28px;
+    margin-bottom: 30px;
+    box-shadow: 0 12px 35px rgba(0,0,0,.06);
+}
+
+.best-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.best-title {
+    color: #073b2a;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: .5px;
+}
+
+.best-market h2 {
+    color: #087f5b;
+    margin: 8px 0;
+    font-size: 30px;
+}
+
+.best-market p {
+    color: #718078;
+}
+
+.revenue {
+    text-align: right;
+}
+
+.revenue-label {
+    color: #718078;
+    font-size: 13px;
+}
+
+.revenue-value {
+    color: #087f5b;
+    font-size: 30px;
+    font-weight: 900;
+}
+
+/* FILTER */
+.filter-box {
+    background: #f5f9f7;
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 25px;
+}
+
+.filter-box form {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.filter-box select {
+    flex: 1;
+    padding: 13px 15px;
+    border: 1px solid #d9e6df;
+    border-radius: 12px;
+    background: white;
+}
+
+.filter-box button {
+    border: none;
+    padding: 13px 22px;
+    border-radius: 12px;
+    background: #087f5b;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* TABLE */
+.market-table-box {
+    background: white;
+    border-radius: 24px;
+    overflow: hidden;
+    border: 1px solid #e5eee9;
+    box-shadow: 0 12px 35px rgba(0,0,0,.05);
+}
+
+.market-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.market-table th {
+    background: #073b2a;
+    color: white;
+    padding: 17px;
+    text-align: left;
+    font-size: 13px;
+}
+
+.market-table td {
+    padding: 17px;
+    border-bottom: 1px solid #edf2ef;
+    color: #4f5f57;
+}
+
+.market-table tr:hover {
+    background: #f8fbf9;
+}
+
+.crop-name {
+    color: #073b2a;
+    font-weight: 800;
+}
+
+.modal-price {
+    color: #087f5b;
+    font-weight: 900;
+}
+
+.best-badge {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 20px;
+    background: #e9f8f1;
+    color: #087f5b;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+/* NOTE */
+.market-note {
+    margin-top: 25px;
+    background: #fffaf0;
+    border: 1px solid #f0dfb1;
+    border-radius: 18px;
+    padding: 20px;
+    color: #725a22;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+@media(max-width: 700px) {
+
+    .market-hero h1 {
+        font-size: 31px;
+    }
+
+    .best-top {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .revenue {
+        text-align: left;
+    }
+
+    .filter-box form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .market-table-box {
+        overflow-x: auto;
+    }
+
+    .market-table {
+        min-width: 700px;
+    }
+}
+</style>
+
+
+<div class="market-page">
+
+    <!-- HERO -->
+    <section class="market-hero">
+
+        <span class="market-tag">
+            📈 AGRI-NEXUS MARKET INTELLIGENCE
+        </span>
+
+        <h1>Market Intelligence</h1>
+
+        <p>
+            Compare agricultural market prices and identify
+            better selling opportunities for your produce.
+        </p>
+
+    </section>
+
+
+    <!-- BEST MARKET -->
+    {% if best_market %}
+
+    <section class="best-market">
+
+        <div class="best-top">
+
+            <div>
+
+                <div class="best-title">
+                    🏆 BEST MARKET OPPORTUNITY
+                </div>
+
+                <h2>
+                    {{ best_market.market }}
+                </h2>
+
+                <p>
+                    {{ best_market.crop }}
+                    • {{ best_market.district }}
+                </p>
+
+                <span class="best-badge">
+                    Highest Modal Price
+                </span>
+
+            </div>
+
+
+            <div class="revenue">
+
+                <div class="revenue-label">
+                    Estimated Revenue
+                </div>
+
+                <div class="revenue-value">
+                    ₹{{ expected_revenue|floatformat:0 }}
+                </div>
+
+                <div class="revenue-label">
+                    Based on {{ produce_quantity }} kg
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    {% endif %}
+
+
+    <!-- FILTER -->
+    <div class="filter-box">
+
+        <form method="get">
+
+            <select name="crop">
+
+                <option value="">
+                    All Crops
+                </option>
+
+                {% for crop in crops %}
+
+                <option
+                    value="{{ crop.id }}"
+                    {% if selected_crop == crop.id|stringformat:"s" %}
+                        selected
+                    {% endif %}
+                >
+                    {{ crop.name }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+            <button type="submit">
+                🔍 Compare Prices
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- TABLE -->
+    <div class="market-table-box">
+
+        <table class="market-table">
+
+            <thead>
+
+                <tr>
+                    <th>Crop</th>
+                    <th>Market</th>
+                    <th>District</th>
+                    <th>Min Price</th>
+                    <th>Max Price</th>
+                    <th>Modal Price</th>
+                    <th>Date</th>
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for price in prices %}
+
+                <tr>
+
+                    <td class="crop-name">
+                        🌾 {{ price.crop.name }}
+                    </td>
+
+                    <td>
+                        {{ price.market_name }}
+                    </td>
+
+                    <td>
+                        {{ price.district }}
+                    </td>
+
+                    <td>
+                        ₹{{ price.minimum_price }}
+                    </td>
+
+                    <td>
+                        ₹{{ price.maximum_price }}
+                    </td>
+
+                    <td class="modal-price">
+                        ₹{{ price.modal_price }}
+                    </td>
+
+                    <td>
+                        {{ price.price_date }}
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="7">
+                        No market price data available.
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- NOTE -->
+    <div class="market-note">
+
+        <strong>📌 Market Intelligence Note:</strong>
+
+        The market information displayed here is based on the
+        data available in the Agri-Nexus system. The revenue
+        calculation is an estimate using the modal market price
+        and should not be treated as a guaranteed selling price.
+
+    </div>
+
+</div>
+
+{% endblock %}

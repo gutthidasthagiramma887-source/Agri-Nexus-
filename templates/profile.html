@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block title %}My Profile | Agri-Nexus{% endblock %}
+
+{% block content %}
+
+<div class="page">
+
+<div class="container"
+     style="max-width:800px;">
+
+<div class="section-title">
+
+<h1>Farmer Profile 👨‍🌾</h1>
+
+<p>Your Agri-Nexus identity.</p>
+
+</div>
+
+
+<div class="card">
+
+<div style="display:flex;
+            align-items:center;
+            gap:20px;
+            margin-bottom:30px;">
+
+<div style="width:80px;
+            height:80px;
+            background:var(--mint);
+            border-radius:50%;
+            display:grid;
+            place-items:center;
+            font-size:38px;">
+
+👨‍🌾
+
+</div>
+
+<div>
+
+<h2>{{ user.username }}</h2>
+
+<p style="color:var(--muted);">
+Agri-Nexus Farmer
+</p>
+
+</div>
+
+</div>
+
+
+<div style="display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:20px;">
+
+<div>
+
+<strong>Email</strong>
+
+<p style="color:var(--muted);
+          margin-top:6px;">
+
+{{ user.email }}
+
+</p>
+
+</div>
+
+
+<div>
+
+<strong>Phone</strong>
+
+<p style="color:var(--muted);
+          margin-top:6px;">
+
+{{ farmer.phone|default:"Not provided" }}
+
+</p>
+
+</div>
+
+
+<div>
+
+<strong>Village</strong>
+
+<p style="color:var(--muted);
+          margin-top:6px;">
+
+{{ farmer.village }}
+
+</p>
+
+</div>
+
+
+<div>
+
+<strong>District</strong>
+
+<p style="color:var(--muted);
+          margin-top:6px;">
+
+{{ farmer.district }}
+
+</p>
+
+</div>
+
+
+<div>
+
+<strong>State</strong>
+
+<p style="color:var(--muted);
+          margin-top:6px;">
+
+{{ farmer.state }}
+
+</p>
+
+</div>
+
+
+<div>
+
+<strong>Land Area</strong>
+
+<p style="color:var(--muted);
+          margin-top:6px;">
+
+{{ farmer.land_area }} acres
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

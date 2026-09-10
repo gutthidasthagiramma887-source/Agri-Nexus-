@@ -1,0 +1,444 @@
+{% extends "base.html" %}
+
+{% block title %}Digital Traceability | Agri-Nexus{% endblock %}
+
+{% block content %}
+
+<style>
+
+.trace-page {
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: 40px 24px 70px;
+}
+
+/* HERO */
+
+.trace-hero {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(7, 35, 25, 0.98),
+            rgba(10, 85, 55, 0.95)
+        );
+
+    border-radius: 28px;
+    padding: 45px;
+    color: white;
+    margin-bottom: 35px;
+    position: relative;
+    overflow: hidden;
+}
+
+.trace-hero::after {
+    content: "QR";
+    position: absolute;
+    right: 35px;
+    bottom: -35px;
+    font-size: 170px;
+    font-weight: 900;
+    opacity: 0.06;
+}
+
+.trace-badge {
+    display: inline-block;
+    padding: 8px 15px;
+    border-radius: 30px;
+    background: rgba(255,255,255,0.10);
+    border: 1px solid rgba(255,255,255,0.18);
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
+.trace-hero h1 {
+    margin: 0;
+    font-size: 42px;
+    line-height: 1.1;
+}
+
+.trace-hero p {
+    max-width: 720px;
+    color: #d9eee4;
+    font-size: 16px;
+    line-height: 1.7;
+    margin-top: 15px;
+}
+
+
+/* GRID */
+
+.trace-grid {
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(320px, 1fr)
+    );
+    gap: 24px;
+}
+
+
+/* CARD */
+
+.trace-card {
+    background: white;
+    border: 1px solid #e5eee9;
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.06);
+    transition: 0.3s ease;
+}
+
+.trace-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 18px 45px rgba(0,0,0,0.10);
+}
+
+
+/* QR */
+
+.qr-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f7fbf8;
+    border-radius: 20px;
+    padding: 22px;
+    margin-bottom: 20px;
+}
+
+.qr-box img {
+    width: 190px;
+    height: 190px;
+    object-fit: contain;
+}
+
+
+/* CONTENT */
+
+.crop-name {
+    font-size: 25px;
+    font-weight: 800;
+    color: #103c2a;
+    margin-bottom: 5px;
+}
+
+.trace-id {
+    font-size: 12px;
+    color: #718078;
+    margin-bottom: 18px;
+}
+
+.info-list {
+    display: grid;
+    gap: 11px;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 10px 0;
+    border-bottom: 1px solid #edf2ef;
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    color: #718078;
+    font-size: 13px;
+}
+
+.info-value {
+    color: #183c2d;
+    font-weight: 700;
+    text-align: right;
+}
+
+
+/* QUALITY */
+
+.quality {
+    display: inline-flex;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: #e7f7ed;
+    color: #14733f;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+
+/* BUTTON */
+
+.scan-btn {
+    width: 100%;
+    margin-top: 20px;
+    padding: 13px 18px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(
+        135deg,
+        #0b6b43,
+        #12a363
+    );
+    color: white;
+    font-weight: 800;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    transition: 0.25s ease;
+}
+
+.scan-btn:hover {
+    transform: translateY(-2px);
+}
+
+
+/* EMPTY */
+
+.empty-state {
+    text-align: center;
+    background: white;
+    border-radius: 24px;
+    padding: 60px 25px;
+    border: 1px solid #e5eee9;
+}
+
+.empty-icon {
+    font-size: 55px;
+    margin-bottom: 15px;
+}
+
+.empty-state h2 {
+    color: #123d2b;
+}
+
+.empty-state p {
+    color: #718078;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 700px) {
+
+    .trace-page {
+        padding: 25px 15px 50px;
+    }
+
+    .trace-hero {
+        padding: 30px 24px;
+    }
+
+    .trace-hero h1 {
+        font-size: 31px;
+    }
+
+    .trace-card {
+        padding: 19px;
+    }
+
+    .qr-box img {
+        width: 165px;
+        height: 165px;
+    }
+}
+
+</style>
+
+
+<div class="trace-page">
+
+    <!-- HERO -->
+
+    <section class="trace-hero">
+
+        <div class="trace-badge">
+            🌾 DIGITAL FARM-TO-MARKET
+        </div>
+
+        <h1>
+            Produce Traceability
+        </h1>
+
+        <p>
+            Every produce batch gets a unique digital QR identity.
+            Scan the QR code to access crop, quantity, quality
+            and harvest information.
+        </p>
+
+    </section>
+
+
+    <!-- PRODUCE -->
+
+    {% if produce %}
+
+        <div class="trace-grid">
+
+            {% for item in produce %}
+
+                <div class="trace-card">
+
+                    <!-- QR CODE -->
+
+                    <div class="qr-box">
+
+                        {% if item.qr_code %}
+
+                            <img
+                                src="{{ item.qr_code }}"
+                                alt="Traceability QR Code"
+                            >
+
+                        {% else %}
+
+                            <div>
+                                QR unavailable
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- CROP -->
+
+                    <div class="crop-name">
+                        {{ item.crop.name }}
+                    </div>
+
+                    <div class="trace-id">
+                        Trace ID: ANX-{{ item.id|stringformat:"05d" }}
+                    </div>
+
+
+                    <!-- DETAILS -->
+
+                    <div class="info-list">
+
+                        <div class="info-row">
+
+                            <span class="info-label">
+                                Quantity
+                            </span>
+
+                            <span class="info-value">
+                                {{ item.quantity }} kg
+                            </span>
+
+                        </div>
+
+
+                        <div class="info-row">
+
+                            <span class="info-label">
+                                Quality
+                            </span>
+
+                            <span class="info-value">
+
+                                <span class="quality">
+                                    Grade {{ item.quality }}
+                                </span>
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="info-row">
+
+                            <span class="info-label">
+                                Harvest Date
+                            </span>
+
+                            <span class="info-value">
+                                {{ item.harvest_date }}
+                            </span>
+
+                        </div>
+
+
+                        <div class="info-row">
+
+                            <span class="info-label">
+                                Expected Price
+                            </span>
+
+                            <span class="info-value">
+
+                                {% if item.expected_price %}
+                                    ₹{{ item.expected_price }}
+                                {% else %}
+                                    Not specified
+                                {% endif %}
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="info-row">
+
+                            <span class="info-label">
+                                Sale Status
+                            </span>
+
+                            <span class="info-value">
+
+                                {% if item.available_for_sale %}
+                                    Available
+                                {% else %}
+                                    Not Available
+                                {% endif %}
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- VIEW DETAILS -->
+
+                    <a
+                        href="{% url 'produce_traceability' item.id %}"
+                        class="scan-btn"
+                    >
+                        🔍 View Digital Record
+                    </a>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-state">
+
+            <div class="empty-icon">
+                🌱
+            </div>
+
+            <h2>
+                No Produce Records Yet
+            </h2>
+
+            <p>
+                Add harvested produce to generate
+                your first digital traceability QR.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

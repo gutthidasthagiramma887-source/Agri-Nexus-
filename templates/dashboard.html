@@ -1,0 +1,1626 @@
+{% extends "base.html" %}
+
+{% block title %}Smart Dashboard | Agri-Nexus{% endblock %}
+
+{% block content %}
+
+<style>
+
+.dashboard-page {
+    padding: 25px 0 60px;
+}
+
+.dashboard-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 35px;
+    border-radius: 24px;
+    margin-bottom: 25px;
+    color: white;
+    background:
+        radial-gradient(circle at 85% 20%, rgba(255,255,255,.12), transparent 28%),
+        linear-gradient(135deg, #063b2a, #087f5b 55%, #0aa06e);
+    box-shadow: 0 18px 45px rgba(0,80,55,.18);
+}
+
+.dashboard-hero h1 {
+    color: white;
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+.dashboard-hero p {
+    opacity: .85;
+    max-width: 650px;
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 30px;
+    background: rgba(255,255,255,.13);
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
+
+/* STAT CARDS */
+
+.dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.stat-card {
+    position: relative;
+    overflow: hidden;
+    transition: .25s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+}
+
+.stat-icon {
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    background: var(--mint);
+    font-size: 25px;
+}
+
+.stat-number {
+    font-size: 30px;
+    margin-top: 12px;
+    font-weight: 800;
+}
+
+.stat-label {
+    color: var(--muted);
+    margin-top: 3px;
+}
+
+
+/* MAIN GRID */
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1.35fr .65fr;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+
+/* QUICK ACTIONS */
+
+.action-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.action-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    text-decoration: none;
+    font-weight: 700;
+    color: var(--text);
+    background: var(--card);
+    transition: .2s ease;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    border-color: var(--green);
+    background: var(--mint);
+}
+
+
+/* PROFILE */
+
+.profile-box {
+    display: grid;
+    gap: 14px;
+    margin-top: 20px;
+}
+
+.profile-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+.profile-row span {
+    color: var(--muted);
+}
+
+
+/* INTELLIGENCE */
+
+.intelligence-card {
+    margin-bottom: 25px;
+}
+
+.intelligence-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.intelligence-icon {
+    width: 55px;
+    height: 55px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--mint);
+    font-size: 28px;
+}
+
+.intelligence-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 22px;
+}
+
+.intelligence-item {
+    padding: 20px;
+    border-radius: 17px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    transition: .2s ease;
+}
+
+.intelligence-item:hover {
+    transform: translateY(-3px);
+}
+
+.intelligence-item h3 {
+    margin-bottom: 8px;
+}
+
+.intelligence-item p {
+    color: var(--muted);
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+
+/* VOICE ASSISTANT */
+
+.voice-card {
+    margin-bottom: 25px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(11,143,89,.18);
+    background:
+        radial-gradient(circle at 90% 10%, rgba(18,163,99,.12), transparent 30%),
+        linear-gradient(135deg, #f5fcf8, #ffffff);
+}
+
+.voice-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.voice-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e4f7ed;
+    font-size: 30px;
+}
+
+.voice-header h2 {
+    color: #103c2a;
+    margin: 0;
+}
+
+.voice-header p {
+    color: var(--muted);
+    margin-top: 5px;
+}
+
+.voice-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 22px;
+}
+
+.voice-field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 800;
+    margin-bottom: 7px;
+    color: #355448;
+}
+
+.voice-field select {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #d7e6df;
+    border-radius: 12px;
+    background: white;
+    font-size: 14px;
+}
+
+.voice-message {
+    margin-top: 18px;
+    padding: 17px;
+    border-radius: 15px;
+    background: white;
+    border: 1px solid #e3eee8;
+    color: #284c3d;
+    line-height: 1.7;
+}
+
+.voice-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.voice-btn {
+    border: none;
+    border-radius: 13px;
+    padding: 13px 18px;
+    cursor: pointer;
+    font-weight: 800;
+    background: linear-gradient(135deg,#087449,#12a363);
+    color: white;
+}
+
+.voice-stop {
+    background: #eef3f0;
+    color: #244638;
+}
+
+.voice-status {
+    margin-top: 12px;
+    font-size: 12px;
+    color: #6c7c74;
+}
+
+
+/* DECISION */
+
+.decision-card {
+    margin-bottom: 25px;
+    border-left: 5px solid var(--gold);
+    background:
+        linear-gradient(135deg, rgba(200,154,50,.08), transparent);
+}
+
+.decision-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.decision-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.decision-pill {
+    padding: 9px 14px;
+    border-radius: 30px;
+    background: var(--mint);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+
+/* ADVISORIES */
+
+.advisory-card {
+    margin-bottom: 15px;
+    padding: 18px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+}
+
+.advisory-card:last-child {
+    margin-bottom: 0;
+}
+
+.advisory-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.advisory-card p {
+    color: var(--muted);
+    line-height: 1.6;
+    margin-top: 8px;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 950px) {
+
+    .dashboard-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .intelligence-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .dashboard-hero {
+        padding: 25px;
+    }
+
+    .dashboard-hero h1 {
+        font-size: 28px;
+    }
+
+    .dashboard-stats {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .action-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .voice-controls {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-number {
+        font-size: 25px;
+    }
+
+}
+
+</style>
+
+<div class="page dashboard-page">
+
+<div class="container">
+
+<!-- HERO -->
+
+<div class="dashboard-hero">
+
+```
+<div class="hero-badge">
+    🟢 AGRI-NEXUS INTELLIGENCE ONLINE
+</div>
+
+<h1>
+    Farmer Command Center 🌱
+</h1>
+
+<p>
+    Welcome back, {{ user.username }}.
+    Monitor your farm, crops, weather, market and
+    crop health from one intelligent command center.
+</p>
+
+<div style="
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:22px;
+">
+
+    <a href="{% url 'weather' %}"
+       class="btn"
+       style="background:white;color:#063b2a;">
+        🌦 Live Weather
+    </a>
+
+    <a href="{% url 'market' %}"
+       class="btn"
+       style="
+           background:rgba(255,255,255,.13);
+           color:white;
+           border:1px solid rgba(255,255,255,.2);
+       ">
+        💰 Market Intelligence
+    </a>
+
+</div>
+```
+
+</div>
+
+<!-- STATISTICS -->
+
+<div class="dashboard-stats">
+
+```
+<div class="card stat-card">
+
+    <div class="stat-icon">
+        🚜
+    </div>
+
+    <div class="stat-number">
+        {{ farms_count }}
+    </div>
+
+    <div class="stat-label">
+        My Farms
+    </div>
+
+</div>
+
+
+<div class="card stat-card">
+
+    <div class="stat-icon">
+        🌱
+    </div>
+
+    <div class="stat-number">
+        {{ crops_count }}
+    </div>
+
+    <div class="stat-label">
+        Active Cultivations
+    </div>
+
+</div>
+
+
+<div class="card stat-card">
+
+    <div class="stat-icon">
+        📦
+    </div>
+
+    <div class="stat-number">
+        {{ produce_count }}
+    </div>
+
+    <div class="stat-label">
+        Produce Records
+    </div>
+
+</div>
+
+
+<div class="card stat-card">
+
+    <div class="stat-icon">
+        🤖
+    </div>
+
+    <div class="stat-number">
+        {{ disease_count }}
+    </div>
+
+    <div class="stat-label">
+        Health Scans
+    </div>
+
+</div>
+```
+
+</div>
+
+<!-- QUICK ACTIONS + PROFILE -->
+
+<div class="dashboard-grid">
+
+<div class="card">
+
+```
+<h2>
+    ⚡ Quick Actions
+</h2>
+
+<p style="
+    color:var(--muted);
+    margin-top:6px;
+">
+    Access the most important farming tools.
+</p>
+
+
+<div class="action-grid">
+
+
+    <a href="{% url 'farms' %}"
+       class="action-btn">
+
+        🚜
+        <span>Manage Farms</span>
+
+    </a>
+
+
+    <a href="{% url 'crops' %}"
+       class="action-btn">
+
+        🌱
+        <span>Manage Crops</span>
+
+    </a>
+
+
+    <a href="{% url 'disease_detection' %}"
+       class="action-btn">
+
+        🤖
+        <span>Scan Crop Health</span>
+
+    </a>
+
+
+    <a href="{% url 'market' %}"
+       class="action-btn">
+
+        💰
+        <span>Market Prices</span>
+
+    </a>
+
+
+    <a href="{% url 'weather' %}"
+       class="action-btn">
+
+        🌦
+        <span>Weather Intelligence</span>
+
+    </a>
+
+
+    <a href="{% url 'produce' %}"
+       class="action-btn">
+
+        📦
+        <span>Manage Produce</span>
+
+    </a>
+
+
+    <a href="{% url 'crop_recommendation' %}"
+       class="action-btn">
+
+        🧠
+        <span>Smart Crop Recommendation</span>
+
+    </a>
+
+
+    <a href="{% url 'ai_advisory' %}"
+       class="action-btn">
+
+        🤖
+        <span>AI Farmer Advisory</span>
+
+    </a>
+
+
+    <a href="{% url 'traceability' %}"
+       class="action-btn">
+
+        🔐
+        <span>Digital Traceability</span>
+
+    </a>
+
+
+</div>
+```
+
+</div>
+
+<!-- PROFILE -->
+
+<div class="card">
+
+```
+<h2>
+    👤 Farmer Profile
+</h2>
+
+<div class="profile-box">
+
+
+    <div class="profile-row">
+
+        <span>
+            Village
+        </span>
+
+        <strong>
+            {{ farmer.village }}
+        </strong>
+
+    </div>
+
+
+    <div class="profile-row">
+
+        <span>
+            District
+        </span>
+
+        <strong>
+            {{ farmer.district }}
+        </strong>
+
+    </div>
+
+
+    <div class="profile-row">
+
+        <span>
+            State
+        </span>
+
+        <strong>
+            {{ farmer.state }}
+        </strong>
+
+    </div>
+
+
+    <div class="profile-row">
+
+        <span>
+            Land
+        </span>
+
+        <strong>
+            {{ farmer.land_area }} acres
+        </strong>
+
+    </div>
+
+
+</div>
+
+
+<a href="{% url 'profile' %}"
+   class="btn btn-light"
+   style="
+       width:100%;
+       margin-top:18px;
+   ">
+
+    View Profile →
+
+</a>
+```
+
+</div>
+
+</div>
+
+<!-- VOICE ASSISTANT -->
+
+<div class="card voice-card">
+
+```
+<div class="voice-header">
+
+    <div class="voice-icon">
+        🔊
+    </div>
+
+    <div>
+
+        <h2>
+            Voice Farmer Assistant
+        </h2>
+
+        <p>
+            Select a comfortable language and listen
+            to useful farming guidance.
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="voice-controls">
+
+
+    <div class="voice-field">
+
+        <label>
+            🌐 Select Language
+        </label>
+
+        <select id="voiceLanguage">
+
+            <option value="en-IN">
+                English
+            </option>
+
+            <option value="te-IN">
+                తెలుగు — Telugu
+            </option>
+
+            <option value="hi-IN">
+                हिंदी — Hindi
+            </option>
+
+            <option value="ta-IN">
+                தமிழ் — Tamil
+            </option>
+
+            <option value="kn-IN">
+                ಕನ್ನಡ — Kannada
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <div class="voice-field">
+
+        <label>
+            📢 Select Guidance
+        </label>
+
+        <select id="voiceTopic">
+
+            <option value="daily">
+                Today's Farm Guidance
+            </option>
+
+            <option value="weather">
+                Weather & Irrigation
+            </option>
+
+            <option value="health">
+                Crop Health
+            </option>
+
+            <option value="market">
+                Market Guidance
+            </option>
+
+            <option value="advisory">
+                Latest Advisories
+            </option>
+
+        </select>
+
+    </div>
+
+
+</div>
+
+
+<div id="voiceMessage"
+     class="voice-message">
+
+    Select a language and guidance topic,
+    then press Listen.
+
+</div>
+
+
+<div class="voice-buttons">
+
+    <button
+        type="button"
+        class="voice-btn"
+        onclick="speakFarmAdvice()">
+
+        🔊 Listen
+
+    </button>
+
+
+    <button
+        type="button"
+        class="voice-btn voice-stop"
+        onclick="stopFarmVoice()">
+
+        ⏹ Stop
+
+    </button>
+
+</div>
+
+
+<div id="voiceStatus"
+     class="voice-status">
+
+    Voice assistant ready.
+
+</div>
+```
+
+</div>
+
+<!-- SMART FARM INTELLIGENCE -->
+
+<div class="card intelligence-card">
+
+```
+<div class="intelligence-header">
+
+    <div class="intelligence-icon">
+        🧠
+    </div>
+
+    <div>
+
+        <h2>
+            Smart Farm Intelligence
+        </h2>
+
+        <p style="
+            color:var(--muted);
+            margin-top:5px;
+        ">
+
+            Agri-Nexus converts farm information
+            into actionable decisions.
+
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="intelligence-grid">
+
+
+    <div class="intelligence-item">
+
+        <div style="font-size:30px;">
+            🌦️
+        </div>
+
+        <h3>
+            Weather Intelligence
+        </h3>
+
+        <p>
+            Use live weather and 7-day forecasts
+            to plan irrigation, spraying and
+            field activities.
+        </p>
+
+        <a href="{% url 'weather' %}"
+           style="
+               display:inline-block;
+               margin-top:12px;
+               font-weight:700;
+               text-decoration:none;
+           ">
+
+            Open Weather →
+
+        </a>
+
+    </div>
+
+
+    <div class="intelligence-item">
+
+        <div style="font-size:30px;">
+            🤖
+        </div>
+
+        <h3>
+            Crop Health AI
+        </h3>
+
+        <p>
+            Upload crop images for crop-health
+            screening and receive treatment guidance.
+        </p>
+
+        <a href="{% url 'disease_detection' %}"
+           style="
+               display:inline-block;
+               margin-top:12px;
+               font-weight:700;
+               text-decoration:none;
+           ">
+
+            Scan Crop →
+
+        </a>
+
+    </div>
+
+
+    <div class="intelligence-item">
+
+        <div style="font-size:30px;">
+            🧠
+        </div>
+
+        <h3>
+            Smart Crop Recommendation
+        </h3>
+
+        <p>
+            Combine weather conditions and
+            agricultural rules to identify
+            suitable crops.
+        </p>
+
+        <a href="{% url 'crop_recommendation' %}"
+           style="
+               display:inline-block;
+               margin-top:12px;
+               font-weight:700;
+               text-decoration:none;
+           ">
+
+            Get Recommendation →
+
+        </a>
+
+    </div>
+
+
+    <div class="intelligence-item">
+
+        <div style="font-size:30px;">
+            🤖
+        </div>
+
+        <h3>
+            AI Farmer Advisory
+        </h3>
+
+        <p>
+            Get practical crop-care recommendations
+            for irrigation, pests, disease monitoring
+            and field management.
+        </p>
+
+        <a href="{% url 'ai_advisory' %}"
+           style="
+               display:inline-block;
+               margin-top:12px;
+               font-weight:700;
+               text-decoration:none;
+           ">
+
+            Ask AI Advisory →
+
+        </a>
+
+    </div>
+
+
+    <div class="intelligence-item">
+
+        <div style="font-size:30px;">
+            💰
+        </div>
+
+        <h3>
+            Market Intelligence
+        </h3>
+
+        <p>
+            Compare available crop prices and
+            understand potential selling opportunities.
+        </p>
+
+        <a href="{% url 'market' %}"
+           style="
+               display:inline-block;
+               margin-top:12px;
+               font-weight:700;
+               text-decoration:none;
+           ">
+
+            View Market →
+
+        </a>
+
+    </div>
+
+
+    <div class="intelligence-item">
+
+        <div style="font-size:30px;">
+            🔐
+        </div>
+
+        <h3>
+            Digital Traceability
+        </h3>
+
+        <p>
+            Give every produce batch a digital identity
+            using QR-based farm-to-market traceability.
+        </p>
+
+        <a href="{% url 'traceability' %}"
+           style="
+               display:inline-block;
+               margin-top:12px;
+               font-weight:700;
+               text-decoration:none;
+           ">
+
+            Open Traceability →
+
+        </a>
+
+    </div>
+
+
+</div>
+```
+
+</div>
+
+<!-- TODAY'S FARM DECISION -->
+
+<div class="card decision-card">
+
+```
+<div class="decision-title">
+
+    <div style="font-size:35px;">
+        🚜
+    </div>
+
+    <div>
+
+        <h2>
+            Today's Farm Decision
+        </h2>
+
+        <p style="
+            color:var(--muted);
+            margin-top:4px;
+        ">
+
+            Recommended actions from your
+            Agri-Nexus command center.
+
+        </p>
+
+    </div>
+
+</div>
+
+
+<p style="
+    margin-top:18px;
+    line-height:1.8;
+    color:var(--muted);
+">
+
+    Before starting major farm activities,
+    check current weather conditions, inspect
+    crop health, review market prices and follow
+    the latest agricultural advisory.
+
+</p>
+
+
+<div class="decision-actions">
+
+    <span class="decision-pill">
+        🌦 Check Weather
+    </span>
+
+    <span class="decision-pill">
+        💧 Check Soil Moisture
+    </span>
+
+    <span class="decision-pill">
+        🔍 Inspect Crop
+    </span>
+
+    <span class="decision-pill">
+        💰 Review Market
+    </span>
+
+    <span class="decision-pill">
+        💡 Follow Advisory
+    </span>
+
+</div>
+```
+
+</div>
+
+<!-- LATEST ADVISORIES -->
+
+<div class="card">
+
+```
+<div style="
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    flex-wrap:wrap;
+">
+
+    <div>
+
+        <h2>
+            Latest Advisories 💡
+        </h2>
+
+        <p style="
+            color:var(--muted);
+            margin-top:5px;
+        ">
+
+            Important crop-management recommendations.
+
+        </p>
+
+    </div>
+
+
+    <a href="{% url 'advisory' %}"
+       class="btn btn-light">
+
+        View All →
+
+    </a>
+
+</div>
+
+
+<div style="margin-top:20px;">
+
+
+{% for advisory in advisories %}
+
+
+    <div class="advisory-card">
+
+
+        <div class="advisory-top">
+
+            <strong>
+                {{ advisory.title }}
+            </strong>
+
+            <span class="badge">
+                {{ advisory.priority }}
+            </span>
+
+        </div>
+
+
+        <p>
+            {{ advisory.message }}
+        </p>
+
+
+        <div style="
+            margin-top:10px;
+            font-size:13px;
+            color:var(--muted);
+        ">
+
+            🌱 Crop:
+
+            <strong>
+                {{ advisory.crop.name }}
+            </strong>
+
+        </div>
+
+
+    </div>
+
+
+{% empty %}
+
+
+    <div style="
+        padding:25px 0;
+        text-align:center;
+        color:var(--muted);
+    ">
+
+        No active advisories available.
+
+    </div>
+
+
+{% endfor %}
+
+
+</div>
+```
+
+</div>
+
+</div>
+
+</div>
+
+<!-- =====================================================
+     MULTILINGUAL VOICE JAVASCRIPT
+====================================================== -->
+
+<script>
+
+
+function getVoiceMessage(topic, language) {
+
+    const messages = {
+
+
+        "en-IN": {
+
+            daily:
+                "Welcome to Agri Nexus. Here is your latest farm guidance. Please monitor your crops regularly and follow the latest agricultural advisories.",
+
+            weather:
+                "Please check the latest temperature, humidity, rainfall and seven day weather forecast. Check weather conditions before irrigation or spraying.",
+
+            health:
+                "Please monitor your crop regularly. Check leaves for spots, yellowing, curling and pest damage.",
+
+            market:
+                "Please check the latest market prices before selling your produce. Compare market prices and choose a suitable selling opportunity.",
+
+            advisory:
+                "Please follow the latest agricultural advisories for your crops and monitor crop health regularly."
+
+        },
+
+
+        "te-IN": {
+
+            daily:
+                "అగ్రి నెక్సస్‌కు స్వాగతం. మీ పొలానికి సంబంధించిన తాజా సూచనలు ఇవి. మీ పంటలను క్రమం తప్పకుండా పరిశీలించండి మరియు తాజా వ్యవసాయ సూచనలను పాటించండి.",
+
+            weather:
+                "నీటిపారుదల లేదా మందులు పిచికారీ చేసే ముందు వాతావరణ పరిస్థితులను పరిశీలించండి. ఉష్ణోగ్రత, తేమ మరియు వర్షపాతాన్ని గమనించండి.",
+
+            health:
+                "మీ పంటను క్రమం తప్పకుండా పరిశీలించండి. ఆకులపై మచ్చలు, పసుపు రంగు, ఆకుల ముడతలు మరియు పురుగుల నష్టాన్ని గమనించండి.",
+
+            market:
+                "మీ పంటను అమ్మే ముందు తాజా మార్కెట్ ధరలను పరిశీలించండి. వివిధ మార్కెట్ ధరలను పోల్చి మంచి అమ్మకపు అవకాశాన్ని ఎంచుకోండి.",
+
+            advisory:
+                "మీ పంటకు సంబంధించిన తాజా వ్యవసాయ సూచనలను పాటించండి. పంట ఆరోగ్యాన్ని క్రమం తప్పకుండా పరిశీలించండి."
+
+        },
+
+
+        "hi-IN": {
+
+            daily:
+                "एग्री नेक्सस में आपका स्वागत है। आपके खेत के लिए नवीनतम सुझाव यहां हैं। अपनी फसलों की नियमित जांच करें और कृषि सलाह का पालन करें।",
+
+            weather:
+                "सिंचाई या दवा का छिड़काव करने से पहले मौसम की स्थिति जांचें। तापमान, नमी और बारिश की जानकारी देखें।",
+
+            health:
+                "अपनी फसल की नियमित जांच करें। पत्तियों पर धब्बे, पीलापन, मुड़ना और कीटों से होने वाले नुकसान को देखें।",
+
+            market:
+                "अपनी फसल बेचने से पहले नवीनतम बाजार कीमतों की जांच करें। अलग-अलग बाजार कीमतों की तुलना करें और बेहतर अवसर चुनें।",
+
+            advisory:
+                "अपनी फसल के लिए नवीनतम कृषि सलाह का पालन करें और फसल के स्वास्थ्य की नियमित निगरानी करें।"
+
+        },
+
+
+        "ta-IN": {
+
+            daily:
+                "அக்ரி நெக்ஸஸுக்கு வரவேற்கிறோம். உங்கள் வயலுக்கான சமீபத்திய வழிகாட்டுதல்கள் இங்கே உள்ளன. உங்கள் பயிர்களை தொடர்ந்து கண்காணிக்கவும்.",
+
+            weather:
+                "நீர்ப்பாசனம் அல்லது மருந்து தெளிப்பதற்கு முன் வானிலை நிலையை சரிபார்க்கவும். வெப்பநிலை, ஈரப்பதம் மற்றும் மழைப்பொழிவை கவனிக்கவும்.",
+
+            health:
+                "உங்கள் பயிரை தொடர்ந்து கண்காணிக்கவும். இலைகளில் புள்ளிகள், மஞ்சள் நிறம், சுருட்டல் மற்றும் பூச்சி சேதங்களை கவனிக்கவும்.",
+
+            market:
+                "உங்கள் விளைபொருளை விற்பதற்கு முன் சமீபத்திய சந்தை விலைகளை சரிபார்க்கவும். வெவ்வேறு சந்தை விலைகளை ஒப்பிட்டு நல்ல வாய்ப்பை தேர்வு செய்யவும்.",
+
+            advisory:
+                "உங்கள் பயிருக்கு வழங்கப்பட்ட சமீபத்திய விவசாய ஆலோசனைகளைப் பின்பற்றவும். பயிரின் ஆரோக்கியத்தை தொடர்ந்து கண்காணிக்கவும்."
+
+        },
+
+
+        "kn-IN": {
+
+            daily:
+                "ಅಗ್ರಿ ನೆಕ್ಸಸ್‌ಗೆ ಸ್ವಾಗತ. ನಿಮ್ಮ ಹೊಲಕ್ಕಾಗಿ ಇತ್ತೀಚಿನ ಮಾರ್ಗದರ್ಶನ ಇಲ್ಲಿದೆ. ನಿಮ್ಮ ಬೆಳೆಗಳನ್ನು ನಿಯಮಿತವಾಗಿ ಪರಿಶೀಲಿಸಿ.",
+
+            weather:
+                "ನೀರಾವರಿ ಅಥವಾ ಔಷಧಿ ಸಿಂಪಡಿಸುವ ಮೊದಲು ಹವಾಮಾನ ಪರಿಸ್ಥಿತಿಯನ್ನು ಪರಿಶೀಲಿಸಿ. ತಾಪಮಾನ, ತೇವಾಂಶ ಮತ್ತು ಮಳೆಯ ಮಾಹಿತಿಯನ್ನು ಗಮನಿಸಿ.",
+
+            health:
+                "ನಿಮ್ಮ ಬೆಳೆಯನ್ನು ನಿಯಮಿತವಾಗಿ ಪರಿಶೀಲಿಸಿ. ಎಲೆಗಳ ಮೇಲೆ ಕಲೆಗಳು, ಹಳದಿ ಬಣ್ಣ, ಎಲೆಗಳ ಮುದುಡಿಕೆ ಮತ್ತು ಕೀಟ ಹಾನಿಯನ್ನು ಗಮನಿಸಿ.",
+
+            market:
+                "ನಿಮ್ಮ ಉತ್ಪನ್ನವನ್ನು ಮಾರಾಟ ಮಾಡುವ ಮೊದಲು ಇತ್ತೀಚಿನ ಮಾರುಕಟ್ಟೆ ಬೆಲೆಗಳನ್ನು ಪರಿಶೀಲಿಸಿ. ವಿವಿಧ ಮಾರುಕಟ್ಟೆ ಬೆಲೆಗಳನ್ನು ಹೋಲಿಸಿ ಉತ್ತಮ ಅವಕಾಶವನ್ನು ಆಯ್ಕೆಮಾಡಿ.",
+
+            advisory:
+                "ನಿಮ್ಮ ಬೆಳೆಗೆ ಸಂಬಂಧಿಸಿದ ಇತ್ತೀಚಿನ ಕೃಷಿ ಸಲಹೆಗಳನ್ನು ಅನುಸರಿಸಿ. ಬೆಳೆಯ ಆರೋಗ್ಯವನ್ನು ನಿಯಮಿತವಾಗಿ ಪರಿಶೀಲಿಸಿ."
+
+        }
+
+    };
+
+
+    return messages[language]?.[topic]
+        || messages["en-IN"][topic];
+
+}
+
+
+
+function speakFarmAdvice() {
+
+
+    const language =
+        document.getElementById("voiceLanguage").value;
+
+
+    const topic =
+        document.getElementById("voiceTopic").value;
+
+
+    const message =
+        getVoiceMessage(topic, language);
+
+
+    const messageBox =
+        document.getElementById("voiceMessage");
+
+
+    const status =
+        document.getElementById("voiceStatus");
+
+
+    messageBox.innerText = message;
+
+
+    if (!("speechSynthesis" in window)) {
+
+        status.innerText =
+            "Voice playback is not supported in this browser.";
+
+        return;
+
+    }
+
+
+    window.speechSynthesis.cancel();
+
+
+    const speech =
+        new SpeechSynthesisUtterance(message);
+
+
+    speech.lang = language;
+
+
+    speech.rate = 0.85;
+
+
+    speech.pitch = 1;
+
+
+    /*
+       Find a matching installed browser voice
+    */
+
+    const voices =
+        window.speechSynthesis.getVoices();
+
+
+    const languageCode =
+        language.substring(0, 2).toLowerCase();
+
+
+    const matchingVoice =
+        voices.find(function(voice) {
+
+            return voice.lang
+                .toLowerCase()
+                .startsWith(languageCode);
+
+        });
+
+
+    if (matchingVoice) {
+
+        speech.voice = matchingVoice;
+
+    }
+
+
+    speech.onstart = function() {
+
+        status.innerText =
+            "🔊 Speaking in selected language...";
+
+    };
+
+
+    speech.onend = function() {
+
+        status.innerText =
+            "✓ Voice guidance completed.";
+
+    };
+
+
+    speech.onerror = function(event) {
+
+        console.log(
+            "Speech error:",
+            event
+        );
+
+        status.innerText =
+            "Voice for this language is not available in your browser.";
+
+    };
+
+
+    window.speechSynthesis.speak(speech);
+
+}
+
+
+
+function stopFarmVoice() {
+
+
+    if ("speechSynthesis" in window) {
+
+        window.speechSynthesis.cancel();
+
+
+        document.getElementById("voiceStatus").innerText =
+            "⏹ Voice stopped.";
+
+    }
+
+}
+
+
+
+/* LANGUAGE CHANGE */
+
+document
+    .getElementById("voiceLanguage")
+    .addEventListener("change", function() {
+
+
+        const language =
+            this.value;
+
+
+        const messages = {
+
+
+            "en-IN":
+                "English selected. Press Listen to hear the guidance.",
+
+
+            "te-IN":
+                "తెలుగు భాష ఎంపిక చేయబడింది. సూచనలు వినడానికి Listen నొక్కండి.",
+
+
+            "hi-IN":
+                "हिंदी भाषा चुनी गई है। सलाह सुनने के लिए Listen दबाएं.",
+
+
+            "ta-IN":
+                "தமிழ் மொழி தேர்ந்தெடுக்கப்பட்டது. வழிகாட்டுதலை கேட்க Listen அழுத்தவும்.",
+
+
+            "kn-IN":
+                "ಕನ್ನಡ ಭಾಷೆಯನ್ನು ಆಯ್ಕೆ ಮಾಡಲಾಗಿದೆ. ಮಾರ್ಗದರ್ಶನ ಕೇಳಲು Listen ಒತ್ತಿರಿ."
+
+        };
+
+
+        document
+            .getElementById("voiceMessage")
+            .innerText =
+                messages[language];
+
+    });
+
+
+
+/* TOPIC CHANGE */
+
+document
+    .getElementById("voiceTopic")
+    .addEventListener("change", function() {
+
+
+        const language =
+            document.getElementById("voiceLanguage").value;
+
+
+        const topic =
+            this.value;
+
+
+        const message =
+            getVoiceMessage(topic, language);
+
+
+        document
+            .getElementById("voiceMessage")
+            .innerText =
+                message;
+
+    });
+
+
+
+/*
+   Browser voices may load after page load.
+*/
+
+if ("speechSynthesis" in window) {
+
+    window.speechSynthesis.onvoiceschanged =
+        function() {
+
+            window.speechSynthesis.getVoices();
+
+        };
+
+}
+
+
+</script>
+
+{% endblock %}
