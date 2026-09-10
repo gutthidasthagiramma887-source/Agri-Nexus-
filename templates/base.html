@@ -2,226 +2,345 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
+    <!-- Basic Settings -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="description"
-          content="Agri-Nexus - Smart Agriculture Intelligence Platform">
+    <!-- SEO -->
+    <meta
+        name="description"
+        content="Agri-Nexus - Smart Agriculture Intelligence Platform"
+    >
 
+    <!-- Page Title -->
     <title>
-        {% block title %}Agri-Nexus | Smart Agriculture{% endblock %}
+        {% block title %}
+            Agri-Nexus | Smart Agriculture
+        {% endblock %}
     </title>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
 
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
-          rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+        rel="stylesheet"
+    >
 
-    <!-- Agri-Nexus CSS -->
-    <link rel="stylesheet"
-          href="{% static 'css/style.css' %}">
+    <!-- Main CSS -->
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
 
+    <!-- Extra CSS -->
     {% block extra_css %}
     {% endblock %}
+
 </head>
+
 
 <body>
 
-<!-- NAVBAR -->
-<header class="navbar">
-    <div class="nav-container">
 
-        <a href="{% url 'home' %}" class="logo">
-            🌱 <span>Agri</span>-Nexus
-        </a>
+    <!-- =========================
+         NAVBAR
+    ========================== -->
 
-        <nav class="nav-links">
+    <header class="navbar">
 
-            <a href="{% url 'home' %}">Home</a>
+        <div class="navbar-container">
 
-            {% if user.is_authenticated %}
+            <!-- Logo -->
+            <a
+                href="{% url 'home' %}"
+                class="logo"
+            >
 
-                <a href="{% url 'dashboard' %}">Dashboard</a>
+                <div class="logo-icon">
+                    🌱
+                </div>
 
-                <a href="{% url 'farms' %}">My Farms</a>
+                <span>
+                    Agri-Nexus
+                </span>
 
-                <a href="{% url 'crops' %}">Crops</a>
+            </a>
 
-                <a href="{% url 'market' %}">Market</a>
 
-                <a href="{% url 'disease_detection' %}">
-                    Disease AI
+            <!-- Navigation -->
+            <nav class="nav-links">
+
+                <a href="{% url 'home' %}">
+                    Home
                 </a>
 
-                <a href="{% url 'advisory' %}">Advisory</a>
 
-                <a href="{% url 'weather' %}">Weather</a>
+                {% if user.is_authenticated %}
 
-                <a href="{% url 'traceability' %}">
-                    Traceability
-                </a>
+                    <a href="{% url 'dashboard' %}">
+                        Dashboard
+                    </a>
 
-                <a href="{% url 'profile' %}">
-                    👤 {{ user.username }}
-                </a>
+                    <a href="{% url 'farms' %}">
+                        My Farms
+                    </a>
 
-                <a href="{% url 'logout' %}">Logout</a>
+                    <a href="{% url 'crops' %}">
+                        Crops
+                    </a>
 
-            {% else %}
+                    <a href="{% url 'market' %}">
+                        Market
+                    </a>
 
-                <a href="{% url 'login' %}">Login</a>
+                    <a href="{% url 'disease_detection' %}">
+                        Disease AI
+                    </a>
 
-                <a href="{% url 'register' %}"
-                   class="btn btn-gold">
-                    Join Agri-Nexus
-                </a>
+                    <a href="{% url 'advisory' %}">
+                        Advisory
+                    </a>
 
-            {% endif %}
+                    <a href="{% url 'weather' %}">
+                        Weather
+                    </a>
 
-        </nav>
+                    <a href="{% url 'traceability' %}">
+                        Traceability
+                    </a>
 
-    </div>
-</header>
+                    <a href="{% url 'profile' %}">
+                        👤 {{ user.username }}
+                    </a>
 
-
-<!-- DJANGO MESSAGES -->
-
-{% if messages %}
-
-<div class="messages">
-
-    {% for message in messages %}
-
-        <div class="alert">
-            {{ message }}
-        </div>
-
-    {% endfor %}
-
-</div>
-
-{% endif %}
+                    <a href="{% url 'logout' %}">
+                        Logout
+                    </a>
 
 
-<!-- MAIN CONTENT -->
+                {% else %}
 
-<main>
+                    <a href="{% url 'login' %}">
+                        Login
+                    </a>
 
-    {% block content %}
-    {% endblock %}
+                    <a
+                        href="{% url 'register' %}"
+                        class="btn btn-gold"
+                    >
+                        Join Agri-Nexus
+                    </a>
 
-</main>
+                {% endif %}
 
-
-<!-- FOOTER -->
-
-<footer class="footer">
-
-    <div class="footer-container">
-
-        <div>
-
-            <h3>🌱 Agri-Nexus</h3>
-
-            <p>
-                Smart agriculture intelligence for
-                farmers, better decisions and
-                sustainable food systems.
-            </p>
-
-            <br>
-
-            <p>
-                Empowering India's primary sector
-                through technology.
-            </p>
+            </nav>
 
         </div>
 
+    </header>
 
-        <div>
 
-            <h3>Platform</h3>
 
-            <a href="{% url 'dashboard' %}">
-                Dashboard
-            </a>
+    <!-- =========================
+         DJANGO MESSAGES
+    ========================== -->
 
-            <a href="{% url 'farms' %}">
-                Farm Management
-            </a>
+    {% if messages %}
 
-            <a href="{% url 'market' %}">
-                Market Intelligence
-            </a>
+        <div class="messages">
 
-            <a href="{% url 'disease_detection' %}">
-                AI Disease Detection
-            </a>
+            {% for message in messages %}
+
+                <div class="message {{ message.tags }}">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% endif %}
+
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================== -->
+
+    <main>
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+
+            <!-- About -->
+            <div>
+
+                <h3>
+                    🌱 Agri-Nexus
+                </h3>
+
+                <p>
+                    Smart agriculture intelligence for farmers,
+                    better decisions and sustainable food systems.
+                </p>
+
+                <br>
+
+                <p>
+                    Empowering India's primary sector
+                    through technology.
+                </p>
+
+            </div>
+
+
+            <!-- Platform -->
+            <div>
+
+                <h3>
+                    Platform
+                </h3>
+
+                <p>
+                    <a href="{% url 'dashboard' %}">
+                        Dashboard
+                    </a>
+                </p>
+
+                <p>
+                    <a href="{% url 'farms' %}">
+                        Farm Management
+                    </a>
+                </p>
+
+                <p>
+                    <a href="{% url 'market' %}">
+                        Market Intelligence
+                    </a>
+                </p>
+
+                <p>
+                    <a href="{% url 'disease_detection' %}">
+                        AI Disease Detection
+                    </a>
+                </p>
+
+            </div>
+
+
+            <!-- Intelligence -->
+            <div>
+
+                <h3>
+                    Intelligence
+                </h3>
+
+                <p>
+                    <a href="{% url 'weather' %}">
+                        Weather
+                    </a>
+                </p>
+
+                <p>
+                    <a href="{% url 'advisory' %}">
+                        Smart Advisory
+                    </a>
+                </p>
+
+                <p>
+                    <a href="{% url 'produce' %}">
+                        Produce
+                    </a>
+                </p>
+
+                <p>
+                    <a href="{% url 'traceability' %}">
+                        Digital Traceability
+                    </a>
+                </p>
+
+            </div>
 
         </div>
 
 
-        <div>
-
-            <h3>Intelligence</h3>
-
-            <a href="{% url 'weather' %}">
-                Weather
-            </a>
-
-            <a href="{% url 'advisory' %}">
-                Smart Advisory
-            </a>
-
-            <a href="{% url 'produce' %}">
-                Produce
-            </a>
-
-            <a href="{% url 'traceability' %}">
-                Digital Traceability
-            </a>
-
-        </div>
-
-    </div>
-
-
-    <div class="container"
-         style="margin-top:35px;
+        <!-- Footer Bottom -->
+        <div
+            class="container"
+            style="
+                margin-top:35px;
                 padding-top:20px;
                 border-top:1px solid rgba(255,255,255,0.1);
-                text-align:center;">
+                text-align:center;
+            "
+        >
 
-        <p>
-            © <span data-year></span>
-            Agri-Nexus.
-            Built for the future of
-            Indian agriculture.
-        </p>
+            <p>
 
-    </div>
+                ©
+                <span data-year></span>
 
-</footer>
+                Agri-Nexus.
 
+                Built for the future of
+                Indian agriculture.
 
-<!-- SCROLL TO TOP -->
+            </p>
 
-<button id="scrollTop"
-        aria-label="Scroll to top">
-    ↑
-</button>
+        </div>
+
+    </footer>
 
 
-<!-- JAVASCRIPT -->
 
-<script src="{% static 'js/app.js' %}"></script>
+    <!-- =========================
+         SCROLL TO TOP
+    ========================== -->
 
-{% block extra_js %}
-{% endblock %}
+    <button
+        id="scrollTop"
+        class="scroll-top"
+        aria-label="Scroll to top"
+    >
+        ↑
+    </button>
+
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
+
+    <script src="{% static 'js/app.js' %}"></script>
+
+
+    <!-- Extra JavaScript -->
+    {% block extra_js %}
+    {% endblock %}
+
 
 </body>
+
 </html>
