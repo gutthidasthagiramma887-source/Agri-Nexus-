@@ -1,5 +1,9 @@
-
 from pathlib import Path
+
+
+# ============================================================
+# BASE DIRECTORY
+# ============================================================
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -8,15 +12,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY
 # ============================================================
 
-SECRET_KEY = 'django-insecure-w#feam4(j21ubzyh2byja*fy13kw99j0a6q!4upu9g#7+)ho@)'
+SECRET_KEY = 'your-secret-key'
 
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
+LOGIN_URL = "/login/"
+
 
 # ============================================================
-# APPLICATIONS
+# INSTALLED APPS
 # ============================================================
 
 INSTALLED_APPS = [
@@ -154,7 +160,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 
 # ============================================================
-# WHITENOISE STATIC STORAGE
+# WHITENOISE
 # ============================================================
 
 STORAGES = {
@@ -173,4 +179,3 @@ STORAGES = {
 # ============================================================
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
